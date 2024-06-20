@@ -18,7 +18,7 @@ x = 100
 # importing image
 player_surf = pygame.image.load(join('images','player.png')).convert_alpha()
 player_rect = player_surf.get_frect(center=(WINDOW_WIDTH/2,WINDOW_HEIGHT/2))
-player_direction = pygame.math.Vector2(2,-1)
+player_direction = pygame.math.Vector2(2,-2)
 player_speed = 300
 
 star_surf = pygame.image.load(join('images','star.png')).convert_alpha()
@@ -53,10 +53,15 @@ while running:
     
     #player movement
     player_rect.center += player_direction * player_speed * dt
-
-    display_surface.blit(player_surf,player_rect)
-
-    pygame.display.update()
+    if player_rect.bottom >= WINDOW_HEIGHT or player_rect.top <= 0:
+        player_direction.y *=-1
+    if player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0:
+        player_direction.x *= -1
+        
+        
     
+    
+    display_surface.blit(player_surf,player_rect)
+    pygame.display.update()
     
 pygame.quit()
