@@ -4,6 +4,8 @@
         "bottomleft",
         "darkgrey",
         "frect",
+        "KEYDOWN",
+        "MOUSEMOTION",
         "pygame"
     ]
 }
