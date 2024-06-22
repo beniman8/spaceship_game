@@ -2,9 +2,13 @@
     "cSpell.words": [
         "blit",
         "bottomleft",
+        "centery",
+        "cooldown",
         "darkgrey",
         "frect",
         "KEYDOWN",
+        "midbottom",
+        "midtop",
         "MOUSEMOTION",
         "pygame"
     ]
