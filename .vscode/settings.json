@@ -10,6 +10,8 @@
         "midbottom",
         "midtop",
         "MOUSEMOTION",
-        "pygame"
+        "Oxanium",
+        "pygame",
+        "spritecollide"
     ]
 }
