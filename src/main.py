@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         
         recent_keys = pygame.key.get_just_pressed()
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
-            Laser(laser_surf,self.rect.midtop,all_sprite)
+            Laser(laser_surf,self.rect.midtop,(all_sprite,laser_sprite))
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
             
@@ -61,7 +61,6 @@ class Laser(pygame.sprite.Sprite):
         
     def update(self,dt) -> None:
         self.rect.centery -= 400 * dt
-        
         if self.rect.bottom < 0:
             self.kill()
         return super().update()
@@ -84,6 +83,20 @@ class Meteor(pygame.sprite.Sprite):
             
         return super().update()
 
+def collisions():
+    global running
+    collisions_sprites = pygame.sprite.spritecollide(player,meteor_sprite,False)
+
+    if collisions_sprites:
+        running = False
+    
+    for laser in laser_sprite:
+        collided_sprites = pygame.sprite.spritecollide(laser,meteor_sprite,True)
+        if collided_sprites:
+            laser.kill()
+
+    
+
 # general setup
 pygame.init()
 WINDOW_WIDTH,WINDOW_HEIGHT = 1280,720
@@ -99,13 +112,15 @@ laser_surf = pygame.image.load(join('images','laser.png')).convert_alpha()
 
 # sprites
 all_sprite = pygame.sprite.Group()
+meteor_sprite = pygame.sprite.Group()
+laser_sprite = pygame.sprite.Group()
 for i in range(20):
     Star(all_sprite,star_surf)
 player = Player(all_sprite)
 
 # custom events -> meteor event 
 meteor_event = pygame.event.custom_type()
-pygame.time.set_timer(meteor_event,200)
+pygame.time.set_timer(meteor_event,100)
 
 while running:
     #delta time
@@ -116,13 +131,19 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == meteor_event:
-            Meteor(all_sprite,meteor_surf=meteor_surf)
+            Meteor((all_sprite, meteor_sprite),meteor_surf=meteor_surf)
     #update
     all_sprite.update(dt)
+    collisions()
 
     # draw the game
     display_surface.fill('darkgrey')
     all_sprite.draw(display_surface)
+    
+    
+    # test collision
+    
+    
     pygame.display.update()
     
 pygame.quit()
